@@ -245,4 +245,9 @@ class User implements AdvancedUserInterface
     {
         $this->posts = $posts;
     }
+
+    public function __toString()
+    {
+        return sprintf('%s (%s)', $this->name, $this->email);
+    }
 }
