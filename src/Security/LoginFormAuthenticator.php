@@ -1,73 +1,73 @@
 <?php
 
-
 namespace App\Security;
 
-
 use App\Entity\User;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\Exception\DisabledException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    private $serializer;
-    private $router;
-    private $passwordEncoder;
+    const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(SerializerInterface $serializer, RouterInterface $router, UserPasswordEncoderInterface $passwordEncoder)
+    private $entityManager;
+    private $urlGenerator;
+    private $csrfTokenManager;
+
+    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager)
     {
-        $this->serializer = $serializer;
-        $this->router = $router;
-        $this->passwordEncoder = $passwordEncoder;
+        $this->entityManager = $entityManager;
+        $this->urlGenerator = $urlGenerator;
+        $this->csrfTokenManager = $csrfTokenManager;
     }
 
     public function supports(Request $request)
     {
-        return 'app_login' === $request->attributes->get('_route') && $request->isMethod('POST');
+        return self::LOGIN_ROUTE === $request->attributes->get('_route')
+            && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
     {
         $credentials = [
-            'username' => $request->request->get('username'),
-            'password' => $request->request->get('password')
+            'email' => $request->request->get('email'),
+            'password' => $request->request->get('password'),
+            'csrf_token' => $request->request->get('_csrf_token'),
         ];
-        if ($request->hasSession()) {
-            $request->getSession()->set(
-                Security::LAST_USERNAME,
-                $credentials['username']
-            );
-        }
+        $request->getSession()->set(
+            Security::LAST_USERNAME,
+            $credentials['email']
+        );
 
         return $credentials;
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $user = $userProvider->loadUserByUsername($credentials['username']);
+        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+        if (!$this->csrfTokenManager->isTokenValid($token)) {
+            throw new InvalidCsrfTokenException();
+        }
+
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('User could not be found.');
+            throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
         return $user;
@@ -75,60 +75,23 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        // Check the user's password or other credentials and return true or false
+        // If there are no credentials to check, you can just return true
+        throw new \Exception('TODO: check the credentials inside '.__FILE__);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $user = $token->getUser();
-        $user = $this->serializer->serialize(self::getUserData($user), 'json', [AbstractNormalizer::GROUPS => ['Main']]);
-
-        return new Response($user);
-    }
-
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
-    {
-        if ($request->getSession() instanceof SessionInterface) {
-            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
+        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+            return new RedirectResponse($targetPath);
         }
 
-        if ($exception instanceof DisabledException) {
-            return new JsonResponse(["error" => "Пользователь заблокирован."], Response::HTTP_FORBIDDEN);
-        } else if($exception instanceof BadCredentialsException || $exception instanceof UsernameNotFoundException) {
-            return new JsonResponse(["error" => "Неверный логин или пароль"], Response::HTTP_UNAUTHORIZED);
-        }
-        else {
-            return new JsonResponse(["error" => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
-        }
+        // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
+        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     protected function getLoginUrl()
     {
-        return $this->router->generate('app_login');
-    }
-
-    public function start(Request $request, AuthenticationException $authException = null)
-    {
-        $data = [];
-        if ($authException) {
-            $data['error'] = $authException->getMessage();
-            if ($token = $authException->getToken()) {
-                $data['username'] = $token->getUsername();
-            }
-        }
-        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
-    }
-
-    public static function getUserData(UserInterface $user)
-    {
-        if ($user instanceof User) {
-            return $user;
-        }
-
-        $newUser = new User();
-        $newUser->setName($user->getUsername());
-        $newUser->setEmail($user->getUsername());
-
-        return $newUser;
+        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 }

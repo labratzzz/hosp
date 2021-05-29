@@ -52,7 +52,7 @@ class Appointment
     /**
      * Timeslot from 1 to 32
      * @var int
-     * @ORM\Column(type="int")
+     * @ORM\Column(type="integer")
      * @Groups({"Main"})
      */
     private $timeSlot;

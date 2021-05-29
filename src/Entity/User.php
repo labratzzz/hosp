@@ -23,8 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements AdvancedUserInterface
 {
 
-    const USERTYPE_PATIENT = 'patient';
-    const USERTYPE_DOCTOR = 'doctor';
+    const USERTYPE_PATIENT = 0;
+    const USERTYPE_DOCTOR = 1;
 
     const USERTYPES = [
         0 => self::USERTYPE_PATIENT,
@@ -126,13 +126,13 @@ class User implements AdvancedUserInterface
     private $post;
 
     /**
-     * @var Appointment
+     * @var Appointment[]
      * @ORM\OneToMany(targetEntity="Appointment", mappedBy="doctor")
      */
     private $appointmentsAsDoctor;
 
     /**
-     * @var Appointment
+     * @var Appointment[]
      * @ORM\OneToMany(targetEntity="Appointment", mappedBy="patient")
      */
     private $appointmentsAsPatient;
@@ -324,7 +324,7 @@ class User implements AdvancedUserInterface
     /**
      * @return string
      */
-    public function getPost(): string
+    public function getPost()
     {
         return $this->post;
     }

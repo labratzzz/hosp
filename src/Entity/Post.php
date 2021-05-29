@@ -60,14 +60,14 @@ class Post
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="posts")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $author;
 
     /**
      * @var File[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="File", mappedBy="")
+     * @ORM\OneToMany(targetEntity="File", mappedBy="post")
      */
     private $attachments;
 

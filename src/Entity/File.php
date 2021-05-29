@@ -71,7 +71,7 @@ class File
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="uploadedFiles")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $uploader;

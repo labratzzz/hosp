@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * Class PageController
  * @package App\Controller
+ *
+ * @Route(name="page.")
  */
 class PageController extends Controller
 {
@@ -30,42 +32,42 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("home", methods={"GET"})
+     * @Route("home", name="home", methods={"GET"})
      * @param Request $request
      * @return Response|null
      */
     public function homePage(Request $request)
     {
-        return $this->render('home/main.html.twig');
+        return $this->render('pages/home/main.html.twig');
     }
 
     /**
-     * @Route("about", methods={"GET"})
+     * @Route("about", name="about", methods={"GET"})
      * @param Request $request
      * @return Response|null
      */
     public function aboutPage(Request $request)
     {
-        return $this->render('about/main.html.twig');
+        return $this->render('pages/about/main.html.twig');
     }
 
     /**
-     * @Route("contacts", methods={"GET"})
+     * @Route("contacts", name="contacts", methods={"GET"})
      * @param Request $request
      * @return Response|null
      */
     public function contactsPage(Request $request)
     {
-        return $this->render('contacts/main.html.twig');
+        return $this->render('pages/contacts/main.html.twig');
     }
 
     /**
-     * @Route("services", methods={"GET"})
+     * @Route("services", name="services", methods={"GET"})
      * @param Request $request
      * @return Response|null
      */
     public function servicesPage(Request $request)
     {
-        return $this->render('services/main.html.twig');
+        return $this->render('pages/services/main.html.twig');
     }
 }
