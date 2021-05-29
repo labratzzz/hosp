@@ -11,14 +11,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Represents user that can access site resources and might be a doctor or patient.
+ *
  * Class User
  * @package App\Entity
+ *
  * @ORM\Entity()
  * @UniqueEntity(fields={"email"})
  * @ORM\Table(name="users")
  */
 class User implements AdvancedUserInterface
 {
+
+    const USERTYPE_PATIENT = 'patient';
+    const USERTYPE_DOCTOR = 'doctor';
+
+    const USERTYPES = [
+        0 => self::USERTYPE_PATIENT,
+        1 => self::USERTYPE_DOCTOR
+    ];
 
     const ROLE_DEFAULT = 'ROLE_USER';
 
@@ -70,7 +81,7 @@ class User implements AdvancedUserInterface
      * @ORM\Column(type="array")
      * @Groups({"Main"})
      */
-    protected $roles;
+    private $roles;
 
     /**
      * @var boolean
@@ -90,9 +101,41 @@ class User implements AdvancedUserInterface
     /**
      * @var Post[]
      * @ORM\OneToMany(targetEntity="Post", mappedBy="author")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $posts;
+
+    /**
+     * @var File[]
+     * @ORM\OneToMany(targetEntity="File", mappedBy="uploader")
+     */
+    private $uploadedFiles;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     * @Groups({"Main"})
+     * @Assert\NotBlank()
+     */
+    private $type;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     * @Groups({"Main"})
+     */
+    private $post;
+
+    /**
+     * @var Appointment
+     * @ORM\OneToMany(targetEntity="Appointment", mappedBy="doctor")
+     */
+    private $appointmentsAsDoctor;
+
+    /**
+     * @var Appointment
+     * @ORM\OneToMany(targetEntity="Appointment", mappedBy="patient")
+     */
+    private $appointmentsAsPatient;
 
     public function isAccountNonExpired()
     {
@@ -246,8 +289,89 @@ class User implements AdvancedUserInterface
         $this->posts = $posts;
     }
 
+    /**
+     * @return File[]
+     */
+    public function getUploadedFiles()
+    {
+        return $this->uploadedFiles;
+    }
+
+    /**
+     * @param File[] $uploadedFiles
+     */
+    public function setUploadedFiles($uploadedFiles)
+    {
+        $this->uploadedFiles = $uploadedFiles;
+    }
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setType(int $type)
+    {
+        $this->type = $type;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getPost(): string
+    {
+        return $this->post;
+    }
+
+    /**
+     * @param string $post
+     */
+    public function setPost(string $post)
+    {
+        $this->post = $post;
+    }
+
+    /**
+     * @return Appointment
+     */
+    public function getAppointmentsAsDoctor()
+    {
+        return $this->appointmentsAsDoctor;
+    }
+
+    /**
+     * @param Appointment $appointmentsAsDoctor
+     */
+    public function setAppointmentsAsDoctor($appointmentsAsDoctor)
+    {
+        $this->appointmentsAsDoctor = $appointmentsAsDoctor;
+    }
+
+    /**
+     * @return Appointment
+     */
+    public function getAppointmentsAsPatient()
+    {
+        return $this->appointmentsAsPatient;
+    }
+
+    /**
+     * @param Appointment $appointmentsAsPatient
+     */
+    public function setAppointmentsAsPatient($appointmentsAsPatient)
+    {
+        $this->appointmentsAsPatient = $appointmentsAsPatient;
+    }
+
     public function __toString()
     {
         return sprintf('%s (%s)', $this->name, $this->email);
     }
+
 }

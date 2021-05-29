@@ -3,22 +3,29 @@
 
 namespace App\Entity;
 
+use App\Service\FileService;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * Represents site news post.
+ *
  * Class Post
  * @package App\Entity
+ *
  * @ORM\Entity()
  * @ORM\Table(name="posts")
  */
 class Post
 {
+    const MAX_ATTACHEMNTS_NUMBER = 10;
+
     /**
      * @var integer
      * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue()
      * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @Groups({"Main"})
      */
     private $id;
@@ -29,6 +36,13 @@ class Post
      * @Groups({"Main"})
      */
     private $title;
+
+    /**
+     * @var File
+     * @ORM\ManyToOne(targetEntity="File", inversedBy="")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $titleImage;
 
     /**
      * @var string
@@ -47,8 +61,15 @@ class Post
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="User", inversedBy="")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $author;
+
+    /**
+     * @var File[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="File", mappedBy="")
+     */
+    private $attachments;
 
     /**
      * @return int
@@ -120,5 +141,48 @@ class Post
     public function setAuthor($author)
     {
         $this->author = $author;
+    }
+
+    /**
+     * @return File
+     */
+    public function getTitleImage()
+    {
+        return $this->titleImage;
+    }
+
+    /**
+     * @param File $titleImage
+     */
+    public function setTitleImage($titleImage)
+    {
+        if (!in_array($titleImage->getExtension(), FileService::IMAGE_EXTENSIONS)) {
+            throw new \InvalidArgumentException('Only image can be set at title image');
+        }
+        $this->titleImage = $titleImage;
+    }
+
+    /**
+     * @return File[]
+     */
+    public function getAttachments()
+    {
+        return $this->attachments;
+    }
+
+    /**
+     * @param File[] $attachments
+     */
+    public function setAttachments($attachments)
+    {
+        $this->attachments = $attachments;
+    }
+
+    /**
+     * @param File[] $attachments
+     */
+    public function addAttachments(File $attachment)
+    {
+        $this->attachments->add($attachment);
     }
 }
