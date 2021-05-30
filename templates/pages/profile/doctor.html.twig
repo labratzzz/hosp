@@ -1,6 +1,5 @@
 {% extends('pages/profile/main.html.twig') %}
 
-
 {% block second_section %}
     <h2>
         Пациенты
@@ -30,7 +29,8 @@
     <h2>
         Новостные посты
     </h2>
-    <table class="table table-success table-striped">
+    {% if posts %}
+    <table class="table table-success table-striped align-middle">
         <thead>
         <tr>
             <th scope="col">№</th>
@@ -39,28 +39,35 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">
-                1
-            </th>
-            <td>
-                Корона забрала 300 людей с поселка
-            </td>
-            <td>
-                <div class="btn-group float-end">
-                    <a href="" class="btn btn-secondary">
-                        Изменить
-                    </a>
-                    <a href="" class="btn btn-danger">
-                         Удалить
-                    </a>
-                </div>
-            </td>
-        </tr>
+        {% for post in posts %}
+            <tr>
+                <th scope="row">
+                    {{ loop.index }}
+                </th>
+                <td>
+                    <a href="{{ path('post.view', {id: post.id}) }}" class="link">{{ post.title }}</a>
+                </td>
+                <td>
+                    <div class="btn-group float-end">
+                        <a href="{{ path('post.update', {id: post.id}) }}" class="btn btn-secondary">
+                            Изменить
+                        </a>
+                        <a href="{{ path('post.delete', {id: post.id}) }}" class="btn btn-danger">
+                            Удалить
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
+    {% else %}
+        <div class="badge bg-success text-wrap d-block my-3">
+            Вами не опубликована ни одна новость.
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block btn_custom %}
-    <a href="#" class="btn btn-secondary">Опубликовать новость</a>
+    <a href="{{ path('post.create') }}" class="btn btn-secondary">Опубликовать новость</a>
 {% endblock %}

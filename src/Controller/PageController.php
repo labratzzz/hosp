@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Post;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -87,13 +88,13 @@ class PageController extends Controller
 
         if ($user->getType() == User::USERTYPE_PATIENT) {
             return $this->render('pages/profile/patient.html.twig', [
-                'name' => $user->getName(),
-                'email' => $user->getEmail()
+                'user' => $user
             ]);
         } else {
+            $posts = $this->getDoctrine()->getRepository(Post::class)->findBy(['author' => $user]);
             return $this->render('pages/profile/doctor.html.twig', [
-                'name' => $user->getName(),
-                'email' => $user->getEmail()
+                'posts' => $posts,
+                'user' => $user
             ]);
         }
     }

@@ -65,8 +65,10 @@ class UserController extends Controller
             return new RedirectResponse($this->generateUrl('app_login'));
         }
 
-        return $this->render('forms/user/create.html.twig', [
-            'form' => $form->createView()
+        return $this->render('forms/user/main.html.twig', [
+            'form' => $form->createView(),
+            'image' => 'img/user-black.svg',
+            'title' => 'Регистрация'
         ]);
     }
 
@@ -97,7 +99,7 @@ class UserController extends Controller
         }
 
 
-        return $this->render('forms/user/update.html.twig', [
+        return $this->render('forms/user/main.html.twig', [
             'form' => $form->createView(),
             'image' => 'img/user-edit.svg',
             'title' => 'Изменение данных'
@@ -132,7 +134,7 @@ class UserController extends Controller
             return new RedirectResponse($this->generateUrl('page.profile'));
         }
 
-        return $this->render('forms/user/update.html.twig', [
+        return $this->render('forms/user/main.html.twig', [
             'form' => $form->createView(),
             'image' => 'img/user-edit.svg',
             'title' => 'Изменение пароля'

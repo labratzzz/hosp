@@ -105,12 +105,6 @@ class User implements AdvancedUserInterface
     private $posts;
 
     /**
-     * @var File[]
-     * @ORM\OneToMany(targetEntity="File", mappedBy="uploader")
-     */
-    private $uploadedFiles;
-
-    /**
      * @var int
      * @ORM\Column(type="integer")
      * @Groups({"Main"})
@@ -290,21 +284,6 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * @return File[]
-     */
-    public function getUploadedFiles()
-    {
-        return $this->uploadedFiles;
-    }
-
-    /**
-     * @param File[] $uploadedFiles
-     */
-    public function setUploadedFiles($uploadedFiles)
-    {
-        $this->uploadedFiles = $uploadedFiles;
-    }
-    /**
      * @return int
      */
     public function getType()
@@ -338,7 +317,7 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * @return Appointment
+     * @return Appointment[]
      */
     public function getAppointmentsAsDoctor()
     {
@@ -354,7 +333,7 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * @return Appointment
+     * @return Appointment[]
      */
     public function getAppointmentsAsPatient()
     {

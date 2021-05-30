@@ -38,4 +38,14 @@ class PathHelper
     {
         return $projectDir . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . (getenv('APP_ENV') === 'dev' ? 'public' : 'build') . DIRECTORY_SEPARATOR;
     }
+
+    /**
+     * Generates unique filename based on current time
+     * @param string|null $prefix
+     * @return string
+     */
+    public static function generateFilename(string $prefix = null)
+    {
+        return sprintf('%s-%s-%s', $prefix, (new \DateTime())->format('YmdHis'), uniqid());
+    }
 }

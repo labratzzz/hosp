@@ -1,0 +1,39 @@
+{% extends('content_noslide.html.twig') %}
+
+{% block content %}
+    <div class="row ">
+        <div class="col-md-12 justify-content-center">
+            <img src="{{ asset('upload/'~post.image) }}" class="rounded mx-auto d-block mb-2 max-height-400" alt="">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="display-4 fw-bold">
+                {{ post.title }}
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-wrap px-5">
+            <p class="text-increase">
+                {{ post.text }}
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <p class="float-start bg-secondary rounded p-2 text-light">
+                Опубликовано {{ post.createdAt|date("d.m.Y") }}
+            </p>
+        </div>
+        <div class="col-md-6">
+            <p class="float-end bg-secondary rounded p-2 text-light">
+                Автор: <i>{{ post.author.name }}</i>
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block form %}
+    {{ form(form) }}
+{% endblock %}

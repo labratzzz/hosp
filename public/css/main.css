@@ -47,3 +47,15 @@ span.mobile { display: none }
 .hr {
     height: 6px;
 }
+
+.max-height-400 {
+    max-height: 400px;
+}
+
+.text-increase {
+    font-size: 1.4em;
+}
+
+.block-center {
+    margin: auto 0 !important;
+}

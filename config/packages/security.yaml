@@ -29,5 +29,6 @@ security:
         path: app_logout
 
   access_control:
-    - { path: ^/profile, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+    - { path: ^/post, roles: [ IS_AUTHENTICATED_FULLY ] }
+    - { path: ^/profile, roles: [ IS_AUTHENTICATED_FULLY ] }
     - { path: ^/, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
