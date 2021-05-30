@@ -1,0 +1,66 @@
+{% extends('pages/profile/main.html.twig') %}
+
+
+{% block second_section %}
+    <h2>
+        Пациенты
+    </h2>
+    <table class="table table-success table-striped">
+        <thead>
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">ФИО пациента</th>
+            <th scope="col">Дата и время</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">
+                1
+            </th>
+            <td>
+                i-болит
+            </td>
+            <td>
+                Завтра
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <h2>
+        Новостные посты
+    </h2>
+    <table class="table table-success table-striped">
+        <thead>
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">Заголовок</th>
+            <th class="text-end" scope="col">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">
+                1
+            </th>
+            <td>
+                Корона забрала 300 людей с поселка
+            </td>
+            <td>
+                <div class="btn-group float-end">
+                    <a href="" class="btn btn-secondary">
+                        Изменить
+                    </a>
+                    <a href="" class="btn btn-danger">
+                         Удалить
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block btn_custom %}
+    <a href="#" class="btn btn-secondary">Опубликовать новость</a>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends('content_noslide.html.twig') %}
+
+{% block content %}
+    <h1>
+        Профиль пользователя
+    </h1>
+    <h2>
+        Инфо
+    </h2>
+    <table class="table table-success table-striped">
+        <tbody>
+        <tr>
+            <th scope="row">
+                Имя пользователя
+            </th>
+            <td>
+                {{ name }}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                Электронная почта
+            </th>
+            <td>
+                {{ email }}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                Телефон
+            </th>
+            <td>
+                +7 800 555 35 35
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    {% block second_section %}{% endblock %}
+    <div class="btn-group">
+        <a href="{{ path('user.update', {id: app.user.id}) }}" class="btn btn-secondary active" aria-current="page">Редактировать данные профиля</a>
+        <a href="{{ path('user.password', {id: app.user.id}) }}" class="btn btn-secondary">Сменить пароль</a>
+        {% block btn_custom %}{% endblock %}
+        <a href="{{ path('user.delete', {id: app.user.id}) }}" class="btn btn-danger">Удалить профиль</a>
+    </div>
+{% endblock %}

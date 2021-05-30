@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,5 +70,31 @@ class PageController extends Controller
     public function servicesPage(Request $request)
     {
         return $this->render('pages/services/main.html.twig');
+    }
+
+    /**
+     * @Route("profile", name="profile", methods={"GET"})
+     * @param Request $request
+     * @return Response|null
+     */
+    public function profilePage(Request $request)
+    {
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            return new Response('ADMIN');
+        }
+
+        if ($user->getType() == User::USERTYPE_PATIENT) {
+            return $this->render('pages/profile/patient.html.twig', [
+                'name' => $user->getName(),
+                'email' => $user->getEmail()
+            ]);
+        } else {
+            return $this->render('pages/profile/doctor.html.twig', [
+                'name' => $user->getName(),
+                'email' => $user->getEmail()
+            ]);
+        }
     }
 }

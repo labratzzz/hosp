@@ -1,0 +1,37 @@
+{% extends('pages/profile/main.html.twig') %}
+
+{% block second_section %}
+    <h2>
+        Запланированные записи
+    </h2>
+    <table class="table table-success table-striped">
+        <thead>
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">Врач</th>
+            <th scope="col">ФИО врача</th>
+            <th scope="col">Дата и время</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">
+                1
+            </th>
+            <td>
+                Суперврач
+            </td>
+            <td>
+                i-болит
+            </td>
+            <td>
+                Завтра
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block btn_custom %}
+    <a href="#" class="btn btn-secondary">Записаться к врачу</a>
+{% endblock %}

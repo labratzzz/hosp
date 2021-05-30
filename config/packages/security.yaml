@@ -10,7 +10,7 @@ security:
     in_memory:
       memory:
         users:
-          admin: { password: 'admin', roles: [ ROLE_ADMIN, ROLE_USER ] }
+          admin@lgorycrb.ru: { password: 'admin', roles: [ ROLE_ADMIN, ROLE_USER ] }
     app_user_provider:
       entity:
         class: 'App\Entity\User'
@@ -29,4 +29,5 @@ security:
         path: app_logout
 
   access_control:
+    - { path: ^/profile, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
     - { path: ^/, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
