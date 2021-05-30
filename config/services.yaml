@@ -32,3 +32,7 @@ services:
     App\Service\FileService:
         arguments:
           [ '@doctrine.orm.entity_manager', '%env(string:UPLOAD_DIRECTORY)%', '%env(int:FILE_MAX_SIZE)%', '%kernel.project_dir%' ]
+
+    App\Service\UserManager:
+        arguments:
+          [ '@Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface' ]

@@ -7,6 +7,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -19,7 +20,7 @@
         <header>
             <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
                 <div class="container">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="{{ path('page.home') }}">
                         <img src="{{ asset('img/caduceus.svg') }}" width="40" height="40" class="d-inline-block align-center" alt="">
                         <span class="desktop">
                             Лысогорская районная больница
@@ -32,7 +33,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarResponsive">
-                        <ul class="navbar-nav ml-auto">
+                        <ul class="navbar-nav ms-auto">
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('page.home') }}">
                                     Главная
@@ -53,13 +54,36 @@
                                     Услуги
                                 </a>
                             </li>
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                <li class="nav-item bg-secondary fw-bold">
+                                    <a class="nav-link" href="{{ path('page.services') }}">
+                                        {{ app.user.email }}
+                                    </a>
+                                </li>
+                                <li class="nav-item bg-secondary fw-bold">
+                                    <a class="nav-link" href="{{ path('app_logout') }}">
+                                        Выход
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item bg-secondary fw-bold">
+                                    <a class="nav-link" href="{{ path('app_login') }}">
+                                        Вход
+                                    </a>
+                                </li>
+                                <li class="nav-item bg-secondary fw-bold">
+                                    <a class="nav-link" href="{{ path('user.register') }}">
+                                        Регистрация
+                                    </a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
             </nav>
             <div class="bg-green">
-                <div class="container py-1">
-                   <ul class="list-group list-group-horizontal mx-auto">
+                <div class="container py-1 justify-content-center">
+                   <ul class="list-group list-group-horizontal">
                         <li class="list-group-item bg-green d-inline-block p-1 mx-2 border-0">
                             <a class="link-light nounderline" href="call:+78455121203">
                                 <img src="{{ asset('img/telephone.svg') }}" width="20" height="20" class="align-center" alt="">
@@ -96,9 +120,8 @@
             </div>
         </header>
         {% block beforecontent %}{% endblock %}
-        <section class="container bg-light mt-2 p-3">
-            {% block body %}{% endblock %}
-        </section>
+        {% block body %}
+        {% endblock %}
         <footer class="footer page-footer font-small bg-secondary pt-4">
             <div class="container-fluid text-center text-md-left">
                 <div class="row">

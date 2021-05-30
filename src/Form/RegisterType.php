@@ -21,22 +21,24 @@ class RegisterType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'ФИО',
-                'required' => true
+                'required' => true,
+                'attr' => ['class' => 'my-2']
             ])
             ->add('email', TextType::class, [
                 'label' => 'Электронная почта',
-                'required' => true
+                'required' => true,
+                'attr' => ['class' => 'my-2']
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
-                'options' => ['attr' => ['class' => 'password-field']],
+                'invalid_message' => 'Пароли должны совпадать.',
+                'options' => ['attr' => ['class' => 'password-field my-2']],
                 'required' => true,
                 'first_options' => ['label' => 'Пароль'],
                 'second_options' => ['label' => 'Повторите пароль']
             ])
             ->add('Зарегистрироваться', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-primary float-right']
+                'attr' => ['class' => 'btn btn-primary float-right text-center my-2']
             ]);
     }
 

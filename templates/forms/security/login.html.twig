@@ -1,0 +1,53 @@
+{% extends 'form.html.twig' %}
+
+{% block title %}Вход{% endblock %}
+
+{% block beforeform %}
+    <img src="{{ asset('img/enter.svg') }}" width="100" height="100" class="align-center mb-2" alt="">
+    <h2 class="fw-bold">
+        Вход
+    </h2>
+{% endblock %}
+
+{% block form %}
+<form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    <label for="inputEmail">Электронная почта</label>
+    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control my-2" required autofocus>
+    <label for="inputPassword">Пароль</label>
+    <input type="password" name="password" id="inputPassword" class="form-control my-2" required>
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+
+    {#
+        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+        See https://symfony.com/doc/current/security/remember_me.html
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+    #}
+
+    <button class="btn btn-lg btn-primary my-2" type="submit">
+        Вход
+    </button>
+    <a href="{{ path('user.register') }}">
+        <button class="btn btn-lg btn-light my-2" type="button">
+            Регистрация
+        </button>
+    </a>
+</form>
+{% endblock %}

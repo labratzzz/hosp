@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegisterType;
-use FOS\UserBundle\Model\UserManagerInterface;
+use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,21 +32,23 @@ class UserController extends Controller
     }
 
     /**
+     * @param UserManager $userManager
      * @param Request $request
-     * @Route("/register", name="register")
      * @return Response|null
+     * @Route("/register", name="register")
      */
-    public function register(Request $request)
+    public function register(UserManager $userManager, Request $request)
     {
-        return $this->create($request);
+        return $this->create($userManager, $request);
     }
 
     /**
+     * @param UserManager $userManager
      * @param Request $request
-     * @Route("/create", name="create")
      * @return Response|null
+     * @Route("/create", name="create")
      */
-    public function create(Request $request)
+    public function create(UserManager $userManager, Request $request)
     {
         $user = new User();
         $user->setType(User::USERTYPE_PATIENT);
@@ -55,13 +57,14 @@ class UserController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $userManager->hashPassword($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
         }
 
-        return $this->render('user/create.html.twig', [
+        return $this->render('forms/user/create.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -84,7 +87,7 @@ class UserController extends Controller
             $em->flush();
         }
 
-        return $this->render('post/create.html.twig', [
+        return $this->render('forms/user/create.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -102,6 +105,6 @@ class UserController extends Controller
         $em->flush();
 
         // TODO
-        return $this->render('post/create.html.twig');
+        return $this->render('forms/user/create.html.twig');
     }
 }

@@ -1,0 +1,11 @@
+{% extends('base.html.twig') %}
+
+{% block beforecontent %}
+    {{ include('components/slides.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    <section class="container bg-light mt-2 p-3">
+        {% block content %}{% endblock %}
+    </section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends('base.html.twig') %}
+
+{% block body %}
+    <section class="container mt-2 p-3">
+        <div class="row justify-content-center">
+            <div class="col-md-6 bg-light text-center px-5 pt-5">
+                {% block beforeform %}{% endblock %}
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6 bg-light p-5">
+                {% block form %}{% endblock %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
