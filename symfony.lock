@@ -93,9 +93,6 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
-    "monolog/monolog": {
-        "version": "1.26.0"
-    },
     "nikic/php-parser": {
         "version": "v4.10.5"
     },
@@ -143,6 +140,18 @@
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.2.7"
+    },
+    "symfony/apache-pack": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "71599f5b0fdeeeec0fb90e9b17c85e6f5e1350c1"
+        },
+        "files": [
+            "public/.htaccess"
+        ]
     },
     "symfony/asset": {
         "version": "v3.4.47"
@@ -271,24 +280,6 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
-    },
-    "symfony/monolog-bridge": {
-        "version": "v3.4.47"
-    },
-    "symfony/monolog-bundle": {
-        "version": "3.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.3",
-            "ref": "d7249f7d560f6736115eee1851d02a65826f0a56"
-        },
-        "files": [
-            "config/packages/dev/monolog.yaml",
-            "config/packages/prod/deprecations.yaml",
-            "config/packages/prod/monolog.yaml",
-            "config/packages/test/monolog.yaml"
-        ]
     },
     "symfony/options-resolver": {
         "version": "v3.4.47"
