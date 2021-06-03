@@ -4,7 +4,6 @@
 namespace App\Controller;
 
 
-use App\Entity\Post;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -83,18 +82,27 @@ class PageController extends Controller
         $user = $this->getUser();
 
         if (!$user instanceof User) {
-            return new Response('ADMIN');
+            $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+            return $this->render('pages/profile/admin.html.twig', [
+                'users' => $users
+            ]);
         }
 
         if ($user->getType() == User::USERTYPE_PATIENT) {
+            $appointments = $user->getAppointmentsAsPatient();
+
             return $this->render('pages/profile/patient.html.twig', [
-                'user' => $user
+                'user' => $user,
+                'appointments' => $appointments
             ]);
         } else {
-            $posts = $this->getDoctrine()->getRepository(Post::class)->findBy(['author' => $user]);
+            $posts = $user->getPosts();
+            $appointments = $user->getAppointmentsAsDoctor();
+
             return $this->render('pages/profile/doctor.html.twig', [
                 'posts' => $posts,
-                'user' => $user
+                'user' => $user,
+                'appointments' => $appointments
             ]);
         }
     }

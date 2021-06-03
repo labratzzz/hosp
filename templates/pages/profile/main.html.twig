@@ -1,6 +1,6 @@
 {% extends('content_noslide.html.twig') %}
 
-{% block title %}Профиль пользователя - Лысогорская РБ{% endblock %}
+{% block pagetitle %}Профиль - Лысогорская РБ{% endblock %}
 
 {% block content %}
     <h1>
@@ -59,7 +59,6 @@
             <a href="{{ path('user.update', {id: app.user.id}) }}" class="btn btn-secondary active" aria-current="page">Редактировать данные профиля</a>
             <a href="{{ path('user.password', {id: app.user.id}) }}" class="btn btn-secondary">Сменить пароль</a>
             {% block btn_custom %}{% endblock %}
-            <a href="{{ path('user.delete', {id: app.user.id}) }}" class="btn btn-danger">Удалить профиль</a>
         </div>
     </div>
 {% endblock %}

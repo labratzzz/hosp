@@ -142,15 +142,15 @@ class UserController extends Controller
     }
 
     /**
-     * @param User $post
+     * @param User $user
      * @param Request $request
      * @return Response|null
      * @Route("/{id}/delete", name="delete")
      */
-    public function delete(User $post, Request $request)
+    public function delete(User $user, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($post);
+        $em->remove($user);
         $em->flush();
 
         $this->get('security.token_storage')->setToken(null);
@@ -159,5 +159,26 @@ class UserController extends Controller
         $this->addFlash('success', 'Пользователь успешно удален.');
 
         return new RedirectResponse($this->generateUrl('page.home'));
+    }
+
+    /**
+     * @param User $user
+     * @param UserManager $userManager
+     * @param Request $request
+     * @return Response|null
+     * @Route("/{id}/reset", name="reset")
+     */
+    public function resetPassword(User $user, UserManager $userManager, Request $request)
+    {
+        $user->setPlainPassword(User::RESET_PASSWORD_VALUE);
+        $userManager->hashPassword($user);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        $this->addFlash('success', 'Пароль успешно сброшен к значению по умолчанию.');
+
+        return new RedirectResponse($this->generateUrl('page.profile'));
     }
 }

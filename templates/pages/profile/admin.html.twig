@@ -1,0 +1,70 @@
+{% extends('content_noslide.html.twig') %}
+
+{% block title %}Панель администрирования - Лысогорская РБ{% endblock %}
+
+{% block content %}
+    <h1>
+        Панель администрирования
+    </h1>
+    <h2>
+        Инфо
+    </h2>
+    <div class="alert alert-primary text-center">
+        Панель администрирования доступна исключительно через адрес электронной почты <b>admin@lgorycrb.ru</b>.<br>
+        Смена данных для входа производится системным администратором.
+    </div>
+    <h2>
+        Пользователи
+    </h2>
+    <table class="table table-success table-striped align-middle">
+        <thead>
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">Имя пользователя</th>
+            <th scope="col">Тип пользователя</th>
+            <th scope="col">Электронная почта</th>
+            <th class="text-end" scope="col">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <th scope="row">
+                    {{ loop.index }}
+                </th>
+                <td>
+                    {{ user.name }}
+                </td>
+                <td>
+                    {{ constant('App\\Entity\\User::USERTYPE_NAME')[user.type] }}
+                </td>
+                <td>
+                    {{ user.email }}
+                </td>
+                <td>
+                    <div class="btn-group float-end">
+                        <a href="{{ path('user.reset', {id: user.id}) }}" class="btn btn-secondary">
+                            Сбросить пароль
+                        </a>
+                        <a href="{{ path('user.delete', {id: user.id}) }}" class="btn btn-danger">
+                            Удалить
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{#    <h2>#}
+{#        Действия#}
+{#    </h2>#}
+{#    {% block second_section %}{% endblock %}#}
+{#    <div class="row">#}
+{#        <div class="btn-group d-flex justify-content-around">#}
+{#            <a href="{{ path('user.update', {id: app.user.id}) }}" class="btn btn-secondary active" aria-current="page">Редактировать данные профиля</a>#}
+{#            <a href="{{ path('user.password', {id: app.user.id}) }}" class="btn btn-secondary">Сменить пароль</a>#}
+{#            {% block btn_custom %}{% endblock %}#}
+{#            <a href="{{ path('user.delete', {id: app.user.id}) }}" class="btn btn-danger">Удалить профиль</a>#}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}

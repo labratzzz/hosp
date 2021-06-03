@@ -1,0 +1,22 @@
+{% extends('form.html.twig') %}
+
+{% block beforeform %}
+    <img src="{{ asset(image) }}" width="100" height="100" class="align-center mb-2" alt="">
+    <h2 class="fw-bold">
+        {{ title }}
+    </h2>
+{% endblock %}
+
+{% block form %}
+    {{ form_errors(form) }}
+    {{ form_start(form) }}
+        {{ form_errors(form.date) }}
+        {{ form_row(form.date) }}
+        {{ form_errors(form.timeSlot) }}
+        {{ form_row(form.timeSlot) }}
+        {{ form_row(form.submit) }}
+        {{ form_row(form.cancel) }}
+    {{ form_end(form) }}
+    <script src="{{ asset('js/jquery-3.6.0.js') }}"></script>
+    <script src="{{ asset('js/form-helper.js') }}"></script>
+{% endblock %}

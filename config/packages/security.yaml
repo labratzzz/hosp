@@ -30,5 +30,6 @@ security:
 
   access_control:
     - { path: ^/post, roles: [ IS_AUTHENTICATED_FULLY ] }
+    - { path: ^/appointment, roles: [ IS_AUTHENTICATED_FULLY ] }
     - { path: ^/profile, roles: [ IS_AUTHENTICATED_FULLY ] }
     - { path: ^/, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
