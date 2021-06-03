@@ -29,6 +29,7 @@ security:
         path: app_logout
 
   access_control:
+    - { path: ^/post/\d+/view, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
     - { path: ^/post, roles: [ IS_AUTHENTICATED_FULLY ] }
     - { path: ^/appointment, roles: [ IS_AUTHENTICATED_FULLY ] }
     - { path: ^/profile, roles: [ IS_AUTHENTICATED_FULLY ] }

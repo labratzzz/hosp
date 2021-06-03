@@ -52,6 +52,14 @@ span.mobile { display: none }
     max-height: 400px;
 }
 
+.max-height-200 {
+    max-height: 200px;
+}
+
+.max-width-200 {
+    max-width: 200px;
+}
+
 .text-increase {
     font-size: 1.4em;
 }

@@ -4,8 +4,9 @@
 namespace App\Controller;
 
 
+use App\Entity\Post;
 use App\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route(name="page.")
  */
-class PageController extends Controller
+class PageController extends AbstractController
 {
     /**
      * @Route("", methods={"GET"})
@@ -29,7 +30,6 @@ class PageController extends Controller
     public function startPage(Request $request)
     {
         return new RedirectResponse('home');
-
     }
 
     /**
@@ -39,7 +39,17 @@ class PageController extends Controller
      */
     public function homePage(Request $request)
     {
-        return $this->render('pages/home/main.html.twig');
+        $page = $request->query->get('page', 1);
+
+        /** @var QueryBuilder $qb */
+        $qb = $this->getDoctrine()->getRepository(Post::class)->getPostQueryBuilder();
+
+        $posts = $this->paginate($qb->getQuery(), $page, $postPages);
+        return $this->render('pages/home/main.html.twig', [
+            'posts' => $posts,
+            'post_pages' => $postPages,
+            'current_page' => $page
+        ]);
     }
 
     /**

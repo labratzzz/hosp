@@ -8,7 +8,6 @@ use App\Entity\Post;
 use App\Form\PostCreateType;
 use App\Form\PostUpdateType;
 use App\Util\PathHelper;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/post", name="post.")
  */
-class PostController extends Controller
+class PostController extends AbstractController
 {
     /**
      * @param Post $post

@@ -7,7 +7,6 @@ namespace App\Controller;
 use App\Entity\Appointment;
 use App\Form\AppointmentCreateType;
 use App\Form\AppointmentUpdateType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,20 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/appointment", name="appointment.")
  */
-class AppointmentController extends Controller
+class AppointmentController extends AbstractController
 {
-    /**
-     * @param Appointment $appointment
-     * @param Request $request
-     * @return Response|null
-     * @Route("/{id}/view", name="view", methods={"GET"})
-     */
-    public function view(Appointment $appointment, Request $request)
-    {
-        return $this->render('forms/post/view.html.twig', [
-            'post' => $appointment
-        ]);
-    }
 
     /**
      * @param Request $request

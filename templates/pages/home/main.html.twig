@@ -3,7 +3,75 @@
 {% block pagetitle %}Главная - Лысогорская РБ{% endblock %}
 
 {% block content %}
-    <h1>
-        Welcome to our site!
+    <h1 class="fw-bold text-center mt-5 mb-3">
+        Лысогорская районная больница
     </h1>
+    <div class="row">
+        <div class="col-md-5 justify-content-center">
+            <img src="{{ asset('img/home.jpg') }}" class="rounded mx-auto d-block mb-2 max-height-400" alt="">
+        </div>
+        <div class="col-md-7">
+            <p>
+            Государственное учреждение здравоохранения "Лысогорская районная больница" - клиническое многопрофильное лечебное
+            учреждение, оказывающее специализированную медицинскую помощь жителям поселка городского типа Лысые Горы,
+            функционирует с 1969 года.
+            </p>
+            <p>
+            Учреждение оказывает как платные так и бесплатные услуги. Актуальную информацию об этом вы можете найти на
+            нашей странице <a href="{{ path('page.services') }}" class="link">"Услуги"</a>.
+            </p>
+        </div>
+    </div>
+    <h1 class="fw-bold text-center mt-5 mb-3">
+        Новости
+    </h1>
+    {% if posts and posts is not empty %}
+        <div class="container bg-light mb-3">
+            {% for post in posts %}
+                <div class="row border-bottom mb-2">
+                    <div class="col-md-3">
+                        <a class="nounderline" href="{{ path('post.view', {id: post.id}) }}">
+                            <img src="{{ asset('upload/'~post.image) }}" class="rounded mx-auto d-block mb-2 max-height-200 max-width-200" alt="">
+                        </a>
+                    </div>
+                    <div class="col-md-9">
+                        <a class="nounderline" href="{{ path('post.view', {id: post.id}) }}">
+                            <h5>
+                                {{ post.title }}
+                            </h5>
+                        </a>
+                        <p>
+                            {{ post.text|length > 255 ? post.text|slice(0, 255) ~ '...' : post.text }}
+                        </p>
+                        <span class="float-end fst-italic">
+                            Опубликовано {{ post.createdAt|date("d.m.Y") }}
+                        </span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+            <nav aria-label="...">
+                <ul class="pagination">
+                    {% if current_page > 1 %}
+                        <li class="page-item"><a class="page-link" href="{{ path('page.home', {'page':current_page-1}) }}" tabindex="-1">Пред.</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('page.home', {'page':current_page-1}) }}">{{ current_page - 1 }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled"><a class="page-link disabled" tabindex="-1">Пред.</a></li>
+                    {% endif %}
+                        <li class="page-item active">
+                            <a class="page-link" href="">{{ current_page }}</a>
+                        </li>
+                    {% if current_page != post_pages %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('page.home', {'page':current_page+1}) }}">{{ current_page + 1 }}</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="{{ path('page.home', {'page':current_page+1}) }}">След.</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><a class="page-link">След.</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+    {% endif %}
 {% endblock %}
