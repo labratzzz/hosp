@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class PatientUpdateType extends UserUpdateType
@@ -11,9 +12,21 @@ class PatientUpdateType extends UserUpdateType
     {
         parent::buildForm($builder, $options);
         $builder
-            ->add('submit', SubmitType::class, [
-                'label' => 'Изменить',
-                'attr' => ['class' => 'btn btn-primary my-2']
+            ->add('polis', TextType::class, [
+                'label' => 'Номер полиса ОМС',
+                'required' => true,
+                'attr' => [
+                    'class' => 'my-2',
+                    'data-inputmask-regex' =>"/^\d{16}$/"
+                ]
+            ])
+            ->add('phone', TextType::class, [
+                'label' => 'Электронная почта',
+                'required' => true,
+                'attr' => [
+                    'class' => 'my-2',
+                    'data-inputmask-regex' =>"/^\d{10}$/",
+                ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Изменить',

@@ -29,28 +29,13 @@
         </tr>
         <tr>
             <th scope="row">
-                Телефон
-            </th>
-            <td>
-                +7 800 555 35 35
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">
                 Пол
             </th>
             <td>
-                Мужчина
+                {{ constant('App\\Entity\\User::SEX_CHOICES')|keys[user.sex] }}
             </td>
         </tr>
-        <tr>
-            <th scope="row">
-                Полис ОМС
-            </th>
-            <td>
-                6578123476589087
-            </td>
-        </tr>
+        {% block info_section %}{% endblock %}
         </tbody>
     </table>
     {% block second_section %}{% endblock %}

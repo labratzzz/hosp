@@ -39,6 +39,11 @@ class User implements AdvancedUserInterface
 
     const ROLE_DEFAULT = 'ROLE_USER';
 
+    const SEX_CHOICES = [
+        'Мужчина' => 0,
+        'Женщина' => 1
+    ];
+
     public function __construct()
     {
         $this->enabled = true;
@@ -58,8 +63,8 @@ class User implements AdvancedUserInterface
      * @var string
      * @ORM\Column(type="string")
      * @Groups({"Main"})
-     * @Assert\Email()
-     * @Assert\NotBlank()
+     * @Assert\Email(groups={"Patient", "Doctor"})
+     * @Assert\NotBlank(groups={"Patient", "Doctor"})
      */
     private $email;
 
@@ -67,7 +72,7 @@ class User implements AdvancedUserInterface
      * @var string
      * @ORM\Column(type="string")
      * @Groups({"Main"})
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"Patient", "Doctor"})
      */
     private $name;
 
@@ -93,7 +98,6 @@ class User implements AdvancedUserInterface
      * @var boolean
      * @ORM\Column(type="boolean")
      * @Groups({"Main"})
-     * @Assert\NotBlank()
      */
     private $enabled;
 
@@ -123,8 +127,35 @@ class User implements AdvancedUserInterface
      * @ORM\ManyToOne(targetEntity="DoctorPost", inversedBy="doctors")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Groups({"Main"})
+     * @Assert\NotBlank(groups={"Patient", "Doctor"})
      */
     private $post;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     * @Groups({"Main"})
+     * @Assert\NotBlank(groups={"Patient", "Doctor"})
+     */
+    private $sex;
+
+    /**
+     * @var int
+     * @ORM\Column(type="string", length=16, nullable=true)
+     * @Groups({"Main"})
+     * @Assert\NotBlank(groups={"Patient"})
+     * @Assert\Regex(pattern="/^\d{16}$/", groups={"Patient"})
+     */
+    private $polis;
+
+    /**
+     * @var int
+     * @ORM\Column(type="string", length=10, nullable=true)
+     * @Groups({"Main"})
+     * @Assert\NotBlank(groups={"Patient"})
+     * @Assert\Regex(pattern="/^\d{10}$/", groups={"Patient"})
+     */
+    private $phone;
 
     /**
      * @var Appointment[]
@@ -308,7 +339,7 @@ class User implements AdvancedUserInterface
 
 
     /**
-     * @return string
+     * @return DoctorPost
      */
     public function getPost()
     {
@@ -321,6 +352,67 @@ class User implements AdvancedUserInterface
     public function setPost(string $post)
     {
         $this->post = $post;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSex()
+    {
+        return $this->sex;
+    }
+
+    /**
+     * @param int $sex
+     */
+    public function setSex($sex)
+    {
+        $this->sex = $sex;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPolis()
+    {
+        return $this->polis;
+    }
+
+    /**
+     * @param int $polis
+     */
+    public function setPolis($polis)
+    {
+        $this->polis = $polis;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFormattedPhone()
+    {
+        return sprintf('+7 (%s) %s %s-%s',
+            substr($this->phone, 0, 3),
+            substr($this->phone, 3, 3),
+            substr($this->phone, 5, 2),
+            substr($this->phone, 7, 2)
+        );
+    }
+
+    /**
+     * @param int $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
     }
 
     /**

@@ -55,16 +55,13 @@
         {% endfor %}
         </tbody>
     </table>
-{#    <h2>#}
-{#        Действия#}
-{#    </h2>#}
-{#    {% block second_section %}{% endblock %}#}
-{#    <div class="row">#}
-{#        <div class="btn-group d-flex justify-content-around">#}
-{#            <a href="{{ path('user.update', {id: app.user.id}) }}" class="btn btn-secondary active" aria-current="page">Редактировать данные профиля</a>#}
-{#            <a href="{{ path('user.password', {id: app.user.id}) }}" class="btn btn-secondary">Сменить пароль</a>#}
-{#            {% block btn_custom %}{% endblock %}#}
-{#            <a href="{{ path('user.delete', {id: app.user.id}) }}" class="btn btn-danger">Удалить профиль</a>#}
-{#        </div>#}
-{#    </div>#}
+    <h2>
+        Действия
+    </h2>
+    {% block second_section %}{% endblock %}
+    <div class="row">
+        <div class="btn-group">
+            <a href="{{ path('user.create_doctor') }}" class="btn btn-secondary active" aria-current="page">Создать новый профиль</a>
+        </div>
+    </div>
 {% endblock %}

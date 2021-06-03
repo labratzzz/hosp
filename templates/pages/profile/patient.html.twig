@@ -1,5 +1,24 @@
 {% extends('pages/profile/main.html.twig') %}
 
+{% block info_section %}
+    <tr>
+        <th scope="row">
+            Телефон
+        </th>
+        <td>
+            {{ user.formattedPhone }}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
+            Полис ОМС
+        </th>
+        <td>
+            {{ user.polis }}
+        </td>
+    </tr>
+{% endblock %}
+
 {% block second_section %}
     <h2>
         Запланированные записи

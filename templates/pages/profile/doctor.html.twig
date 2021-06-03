@@ -1,5 +1,16 @@
 {% extends('pages/profile/main.html.twig') %}
 
+{% block info_section %}
+    <tr>
+        <th scope="row">
+            Специализация
+        </th>
+        <td>
+            {{ user.post }}
+        </td>
+    </tr>
+{% endblock %}
+
 {% block second_section %}
     <h2>
         Предстоящие визиты

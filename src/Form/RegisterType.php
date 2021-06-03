@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -29,6 +30,29 @@ class RegisterType extends AbstractType
                 'required' => true,
                 'attr' => ['class' => 'my-2']
             ])
+            ->add('sex', ChoiceType::class, [
+                'label' => 'Пол',
+                'placeholder' => 'Укажите пол',
+                'choices' => User::SEX_CHOICES,
+                'required' => true,
+                'attr' => ['class' => 'my-2']
+            ])
+            ->add('polis', TextType::class, [
+                'label' => 'Номер полиса ОМС',
+                'required' => true,
+                'attr' => [
+                    'class' => 'my-2',
+                    'data-inputmask-regex' =>"/^\d{16}$/"
+                ]
+            ])
+            ->add('phone', TextType::class, [
+                'label' => 'Электронная почта',
+                'required' => true,
+                'attr' => [
+                    'class' => 'my-2',
+                    'data-inputmask-regex' =>"/^\d{10}$/",
+                ]
+            ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Пароли должны совпадать.',
@@ -46,6 +70,7 @@ class RegisterType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'validation_groups' => ["Patient"]
         ]);
     }
 }
