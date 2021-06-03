@@ -17,11 +17,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Entity
  *
  * @ORM\Entity()
- * @UniqueEntity(fields={"email"})
+ * @UniqueEntity(fields={"email"}, message="Профиль пользователя на данную электронную почту уже зарегистрирован.")
  * @ORM\Table(name="users")
  */
 class User implements AdvancedUserInterface
 {
+    const RESET_PASSWORD_VALUE = 'lgorcbUser64_';
 
     const USERTYPE_PATIENT = 0;
     const USERTYPE_DOCTOR = 1;
@@ -29,6 +30,11 @@ class User implements AdvancedUserInterface
     const USERTYPES = [
         0 => self::USERTYPE_PATIENT,
         1 => self::USERTYPE_DOCTOR
+    ];
+
+    const USERTYPE_NAME = [
+        0 => 'Пациент',
+        1 => 'Врач'
     ];
 
     const ROLE_DEFAULT = 'ROLE_USER';
@@ -113,8 +119,9 @@ class User implements AdvancedUserInterface
     private $type;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
+     * @var DoctorPost
+     * @ORM\ManyToOne(targetEntity="DoctorPost", inversedBy="doctors")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Groups({"Main"})
      */
     private $post;
@@ -350,7 +357,9 @@ class User implements AdvancedUserInterface
 
     public function __toString()
     {
-        return sprintf('%s (%s)', $this->name, $this->email);
+        return ($this->type === self::USERTYPE_PATIENT) ?
+            sprintf('%s (%s)', $this->name, $this->email)
+            : sprintf('%s', $this->name);
     }
 
 }

@@ -1,5 +1,13 @@
 ###> phpstorm ###
-/.idea
+.idea
+.idea/workspace.xml
+.idea/php.xml
+.idea/dataSources.local.xml
+.idea/dataSources.xml
+.idea/vcs.xml
+.idea/modules.xml
+.idea/hosp.iml
+*.iws
 ###< phpstorm ###
 
 ###> symfony/framework-bundle ###
