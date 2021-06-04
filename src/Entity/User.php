@@ -127,7 +127,7 @@ class User implements AdvancedUserInterface
      * @ORM\ManyToOne(targetEntity="DoctorPost", inversedBy="doctors")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Groups({"Main"})
-     * @Assert\NotBlank(groups={"Patient", "Doctor"})
+     * @Assert\NotBlank(groups={"Doctor"})
      */
     private $post;
 

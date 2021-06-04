@@ -46,7 +46,7 @@ class RegisterType extends AbstractType
                 ]
             ])
             ->add('phone', TextType::class, [
-                'label' => 'Электронная почта',
+                'label' => 'Телефон',
                 'required' => true,
                 'attr' => [
                     'class' => 'my-2',

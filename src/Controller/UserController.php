@@ -48,8 +48,6 @@ class UserController extends AbstractController
      */
     public function create(UserManager $userManager, Request $request)
     {
-        $currentUser = $this->getUser();
-
         $user = new User();
         $user->setType(User::USERTYPE_PATIENT);
 
