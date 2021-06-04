@@ -13,9 +13,6 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         {% block stylesheets %}
         {% endblock %}
-        <script src="{{ asset('js/jquery-3.6.0.js') }}"></script>
-        <script src="{{ asset('js/jquery.mask.min.js') }}"></script>
-        <script src="{{ asset('js/form-helper.js') }}"></script>
         {% block javascripts %}
         {% endblock %}
     </head>
@@ -171,5 +168,8 @@
                 © 2021 by Кирилл Орлов
             </div>
         </footer>
+        <script src="{{ asset('js/jquery-3.6.0.js') }}"></script>
+        <script src="{{ asset('js/jquery.mask.min.js') }}"></script>
+        <script src="{{ asset('js/form-helper.js') }}"></script>
     </body>
 </html>

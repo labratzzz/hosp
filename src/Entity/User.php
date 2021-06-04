@@ -337,7 +337,6 @@ class User implements AdvancedUserInterface
         $this->type = $type;
     }
 
-
     /**
      * @return DoctorPost
      */
@@ -347,9 +346,9 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * @param string $post
+     * @param DoctorPost $post
      */
-    public function setPost(string $post)
+    public function setPost($post)
     {
         $this->post = $post;
     }

@@ -6,7 +6,6 @@ namespace App\Form;
 
 use App\Entity\DoctorPost;
 use App\Entity\User;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -41,10 +40,6 @@ class DoctorCreateType extends AbstractType
             ->add('post', EntityType::class, [
                 'class' => DoctorPost::class,
                 'label' => 'Специализация',
-//                'query_builder' => function (EntityRepository $er) {
-//                    return $er->createQueryBuilder('dp');
-//                },
-                'choice_label' => 'name',
                 'placeholder' => 'Укажите специализацию',
                 'required' => false,
                 'attr' => ['class' => 'my-2']

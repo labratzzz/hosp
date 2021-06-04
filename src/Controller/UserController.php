@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\User as AdminUser;
 
 /**
@@ -156,11 +157,12 @@ class UserController extends AbstractController
     /**
      * @param User $user
      * @param UserManager $userManager
+     * @param UserPasswordEncoderInterface $encoder
      * @param Request $request
      * @return Response|null
      * @Route("/{id}/password", name="password")
      */
-    public function updatePassword(User $user, UserManager $userManager, Request $request)
+    public function updatePassword(User $user, UserManager $userManager, UserPasswordEncoderInterface $encoder, Request $request)
     {
         $form = $this->createForm(UserPasswordUpdateType::class, $user);
 
@@ -171,6 +173,12 @@ class UserController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $oldPassword = $form->get('oldPassword')->getData();
+            if (!$encoder->isPasswordValid($user, $oldPassword)) {
+                $this->addFlash('fail', 'Старый пароль введен неверно.');
+
+                return new RedirectResponse($this->generateUrl('page.profile'));
+            }
             $userManager->hashPassword($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
