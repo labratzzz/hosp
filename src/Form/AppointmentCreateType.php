@@ -28,7 +28,12 @@ class AppointmentCreateType extends AbstractType
                 'html5' => true,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'attr' => ['class' => 'my-2']
+                'attr' => [
+                    'class' => 'my-2',
+                    'value' => (new \DateTime())->format('Y-m-d'),
+                    'min' => (new \DateTime())->format('Y-m-d'),
+                    'max' => (new \DateTime())->add(new \DateInterval('P60D'))->format('Y-m-d')
+                ]
             ])
             ->add('timeSlot', ChoiceType::class, [
                 'label' => 'Время записи',
@@ -53,19 +58,18 @@ class AppointmentCreateType extends AbstractType
                 'attr' => ['class' => 'btn btn-danger float-start my-2 me-2']
             ]);
         $builder->get('doctorPost')->addEventListener(
-          FormEvents::POST_SUBMIT,
-          function (FormEvent $event) {
-              $form = $event->getForm();
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) {
+                $form = $event->getForm();
 
-              $form->getParent()->add('doctor', EntityType::class, [
-                  'class' => User::class,
-                  'label' => 'Врач',
-                  'placeholder' => 'Выберите врача',
-                  'attr' => ['class' => 'my-2'],
-                  'choices' => $form->getData()->getDoctors()
-              ]);
-          }
-        );
+                $form->getParent()->add('doctor', EntityType::class, [
+                    'class' => User::class,
+                    'label' => 'Врач',
+                    'placeholder' => 'Выберите врача',
+                    'attr' => ['class' => 'my-2'],
+                    'choices' => $form->getData()->getDoctors()
+                ]);
+            });
         $builder->addEventListener(
             FormEvents::POST_SET_DATA,
             function (FormEvent $event) {
@@ -82,8 +86,7 @@ class AppointmentCreateType extends AbstractType
                     'attr' => ['class' => 'my-2'],
                     'choices' => ($doctor) ? $doctor->getPost()->getDoctors() : []
                 ]);
-            }
-        );
+            });
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -28,7 +28,11 @@ class AppointmentUpdateType extends AbstractType
                 'html5' => true,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'attr' => ['class' => 'my-2']
+                'attr' => [
+                    'class' => 'my-2',
+                    'value' => (new \DateTime())->format('Y-m-d'),
+                    'min' => (new \DateTime())->format('Y-m-d'),
+                    'max' => (new \DateTime())->add(new \DateInterval('P60D'))->format('Y-m-d')]
             ])
             ->add('timeSlot', ChoiceType::class, [
                 'label' => 'Время записи',

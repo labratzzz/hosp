@@ -8,9 +8,8 @@
 {% endblock %}
 
 {% block form %}
-    {{ form_errors(form) }}
     {{ form_start(form) }}
-        {{ form_errors(form.date) }}
+        {{ form_errors(form) }}
         {{ form_row(form.date) }}
         {{ form_errors(form.timeSlot) }}
         {{ form_row(form.timeSlot) }}
