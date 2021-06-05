@@ -13,6 +13,7 @@
         Панель администрирования доступна исключительно через адрес электронной почты <b>admin@lgorycrb.ru</b>.<br>
         Смена данных для входа производится системным администратором.
     </div>
+    {% if users and users is not empty %}
     <h2>
         Пользователи
     </h2>
@@ -55,6 +56,50 @@
         {% endfor %}
         </tbody>
     </table>
+    <nav aria-label="...">
+        <ul class="pagination">
+            {% if user_page > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(currentRoute, currentQuery|merge({'upage':user_page-1})) }}" tabindex="-1">
+                        <
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(currentRoute, currentQuery|merge({'upage':user_page-1})) }}">{{ user_page-1 }}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link disabled" tabindex="-1">
+                        <
+                    </a>
+                </li>
+            {% endif %}
+            <li class="page-item active">
+                <a class="page-link" href="">{{ user_page }}</a>
+            </li>
+            {% if user_page != user_pages %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(currentRoute, currentQuery|merge({'upage':user_page+1})) }}">{{ user_page+1 }}</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(currentRoute, currentQuery|merge({'upage':user_page+1})) }}">
+                        >
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">
+                        >
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% else %}
+    <div class="badge bg-success text-wrap d-block my-3">
+        В системе не зарегистрировано еще ни одного пользователя.
+    </div>
+    {% endif %}
     <h2>
         Действия
     </h2>

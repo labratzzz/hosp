@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Appointment;
 use App\Entity\Post;
 use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
@@ -42,13 +43,13 @@ class PageController extends AbstractController
         $page = $request->query->get('page', 1);
 
         /** @var QueryBuilder $qb */
-        $qb = $this->getDoctrine()->getRepository(Post::class)->getPostQueryBuilder();
+        $qb = $this->getDoctrine()->getRepository(Post::class)->getAllQueryBuilder();
 
         $posts = $this->paginate($qb->getQuery(), $page, $postPages);
         return $this->render('pages/home/main.html.twig', [
             'posts' => $posts,
-            'post_pages' => $postPages,
-            'current_page' => $page
+            'post_page' => $page,
+            'post_pages' => $postPages
         ]);
     }
 
@@ -92,27 +93,46 @@ class PageController extends AbstractController
         $user = $this->getUser();
 
         if (!$user instanceof User) {
-            $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+            $userPage = $request->query->get('upage', 1);
+
+            $qb = $this->getDoctrine()->getRepository(User::class)->getAllQueryBuilder();
+            $users = $this->paginate($qb->getQuery(), $userPage, $userPages);
+
             return $this->render('pages/profile/admin.html.twig', [
-                'users' => $users
+                'users' => $users,
+                'user_page' => $userPage,
+                'user_pages' => $userPages
             ]);
         }
 
-        if ($user->getType() == User::USERTYPE_PATIENT) {
-            $appointments = $user->getAppointmentsAsPatient();
+        $appointmentPage = $request->query->get('apage', 1);
 
+        /** @var QueryBuilder $qb */
+        $qb = $this->getDoctrine()->getRepository(Appointment::class)->getUserAppointmentsQueryBuilder($user);
+        $appointments = $this->paginate($qb->getQuery(), $appointmentPage, $appointmentPages);
+
+        if ($user->getType() == User::USERTYPE_PATIENT) {
             return $this->render('pages/profile/patient.html.twig', [
                 'user' => $user,
-                'appointments' => $appointments
+                'appointments' => $appointments,
+                'app_page' => $appointmentPage,
+                'app_pages' => $appointmentPages,
             ]);
         } else {
-            $posts = $user->getPosts();
-            $appointments = $user->getAppointmentsAsDoctor();
+            $postPage = $request->query->get('ppage', 1);
+
+            /** @var QueryBuilder $qb */
+            $qb = $this->getDoctrine()->getRepository(Post::class)->getUserPostsQueryBuilder($user);
+            $posts = $this->paginate($qb->getQuery(), $postPage, $postPages);
 
             return $this->render('pages/profile/doctor.html.twig', [
-                'posts' => $posts,
                 'user' => $user,
-                'appointments' => $appointments
+                'posts' => $posts,
+                'post_page' => $postPage,
+                'post_pages' => $postPages,
+                'appointments' => $appointments,
+                'app_page' => $appointmentPage,
+                'app_pages' => $appointmentPages,
             ]);
         }
     }

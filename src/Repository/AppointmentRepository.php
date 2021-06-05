@@ -8,34 +8,29 @@ use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
-class PostRepository extends EntityRepository
+class AppointmentRepository extends EntityRepository
 {
 
     /**
-     * Returns Doctrine QueryBuilder with all posts with descending createdAt.
-     *
-     * @return QueryBuilder
-     */
-    public function getAllQueryBuilder()
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb->orderBy('p.createdAt', 'DESC');
-
-        return $qb;
-    }
-
-    /**
-     * Returns Doctrine QueryBuilder with all posts by passed $user with descending createdAt.
+     * Returns Doctrine QueryBuilder with all $user's appointments descending by DateTime.
      *
      * @param User $user
      * @return QueryBuilder
      */
-    public function getUserPostsQueryBuilder(User $user)
+    public function getUserAppointmentsQueryBuilder(User $user)
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->where('p.author = :author')
-            ->setParameter('author', $user)
-            ->orderBy('p.createdAt', 'DESC');
+
+        $qb->setParameter('user', $user)
+            ->orderBy('p.date', 'DESC')
+            ->addOrderBy('p.timeSlot', 'DESC');
+
+        if ($user->getType() == User::USERTYPE_DOCTOR) {
+            $col = 'doctor';
+        } else {
+            $col = 'patient';
+        }
+        $qb->where("p.$col = :user");
 
         return $qb;
     }

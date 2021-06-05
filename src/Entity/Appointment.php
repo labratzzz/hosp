@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Class Appointment
  * @package App\Entity
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\AppointmentRepository")
  * @ORM\Table(name="appointments")
  * @UniqueEntity(
  *     fields={"doctor", "date", "timeSlot"},
