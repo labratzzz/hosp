@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class User
  * @package App\Entity
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"}, message="Профиль пользователя на данную электронную почту уже зарегистрирован.")
  * @ORM\Table(name="users")
  */
@@ -144,7 +144,9 @@ class User implements AdvancedUserInterface
      * @ORM\Column(type="string", length=16, nullable=true)
      * @Groups({"Main"})
      * @Assert\NotBlank(groups={"Patient"})
-     * @Assert\Regex(pattern="/^\d{16}$/", groups={"Patient"})
+     * @Assert\Regex(pattern="/^\d{16}$/",
+     *     message="Полис ОМС должен состоять из 16 цифр",
+     *     groups={"Patient"})
      */
     private $polis;
 
@@ -153,7 +155,9 @@ class User implements AdvancedUserInterface
      * @ORM\Column(type="string", length=10, nullable=true)
      * @Groups({"Main"})
      * @Assert\NotBlank(groups={"Patient"})
-     * @Assert\Regex(pattern="/^\d{10}$/", groups={"Patient"})
+     * @Assert\Regex(pattern="/^\d{10}$/",
+     *     message="Номер телефона должен состоять из 10 цифр без кода страны (+7 по умолчанию)",
+     *     groups={"Patient"})
      */
     private $phone;
 

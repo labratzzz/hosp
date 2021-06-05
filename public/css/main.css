@@ -67,3 +67,19 @@ span.mobile { display: none }
 .block-center {
     margin: auto 0 !important;
 }
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.form-error-icon {
+    background-color: crimson !important;
+}

@@ -8,6 +8,8 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -37,20 +39,24 @@ class RegisterType extends AbstractType
                 'required' => true,
                 'attr' => ['class' => 'my-2']
             ])
-            ->add('polis', TextType::class, [
+            ->add('polis', IntegerType::class, [
                 'label' => 'Номер полиса ОМС',
                 'required' => true,
                 'attr' => [
-                    'class' => 'my-2',
-                    'data-inputmask-regex' =>"/^\d{16}$/"
+                    'class' => 'number my-2',
+                    'max-length' => 16,
+                    'type' => 'number',
+                    'min' => 0
                 ]
             ])
-            ->add('phone', TextType::class, [
+            ->add('phone', IntegerType::class, [
                 'label' => 'Телефон',
                 'required' => true,
                 'attr' => [
-                    'class' => 'my-2',
-                    'data-inputmask-regex' =>"/^\d{10}$/",
+                    'class' => 'number my-2',
+                    'max-length' => 10,
+                    'type' => 'number',
+                    'min' => 0
                 ]
             ])
             ->add('plainPassword', RepeatedType::class, [
