@@ -63,6 +63,45 @@
         {% endfor %}
         </tbody>
     </table>
+        <nav aria-label="...">
+            <ul class="pagination">
+                {% if app_page > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(currentRoute, currentQuery|merge({'apage':app_page-1})) }}" tabindex="-1">
+                            &#60;
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(currentRoute, currentQuery|merge({'apage':app_page-1})) }}">{{ app_page-1 }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link disabled" tabindex="-1">
+                            &#60;
+                        </a>
+                    </li>
+                {% endif %}
+                <li class="page-item active">
+                    <a class="page-link" href="">{{ app_page }}</a>
+                </li>
+                {% if app_page != app_pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(currentRoute, currentQuery|merge({'apage':app_page+1})) }}">{{ app_page+1 }}</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(currentRoute, currentQuery|merge({'apage':app_page+1})) }}">
+                            &#62;
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">
+                            &#62;
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     {% else %}
     <div class="badge bg-success text-wrap d-block my-3">
         У вас не запланировано ни одного визита к врачу.
