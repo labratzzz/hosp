@@ -14,7 +14,6 @@ I don't think that I will continue to work on this project. It has some security
 ![Screenshot2](.github/scr2.png)
 ![Screenshot3](.github/scr3.png)
 ![Screenshot4](.github/scr4.png)
-![Screenshot5](.github/scr5.png)
 
 ### IDE
 IDE used:
